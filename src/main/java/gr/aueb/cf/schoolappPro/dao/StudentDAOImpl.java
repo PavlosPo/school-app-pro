@@ -144,6 +144,35 @@ public class StudentDAOImpl implements IStudentDAO{
     }
 
     @Override
+    public List<Student> getByFirstname(String firstname) throws StudentDAOException {
+        String sql = "SELECT * FROM STUDENTS WHERE FIRSTNAME = ?";
+        List<Student> students = new ArrayList<>();
+        ResultSet rs = null;
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)){
+
+            ps.setString(1, firstname);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Student student = new Student(rs.getInt("ID"), rs.getString("FIRSTNAME"), rs.getString("LASTNAME"), rs.getString("GENDER"), rs.getDate(rs.getRow()), rs.getInt("CITY_ID"), rs.getInt("USER_ID"));
+                students.add(student);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new StudentDAOException("SQL ERROR in STUDENT Select with lastname : " + firstname);
+        } finally {
+            try {
+                if (rs != null) rs.close();     // close result set
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return students;
+    }
+
+    @Override
     public Student getById(int id) throws StudentDAOException {
         String sql = "SELECT * FROM STUDENTS WHERE ID = ?";
         Student student = null;
@@ -190,5 +219,27 @@ public class StudentDAOImpl implements IStudentDAO{
             e.printStackTrace();
         }
         return students;
+    }
+
+    @Override
+    public Boolean studentIdExists(int id) throws StudentDAOException {
+         List<Student> students = getAllStudents();
+         for (Student student : students) {
+             if(student.getId() == id) {
+                 return true;
+             }
+         }
+         return false;
+    }
+
+    @Override
+    public Boolean studentExists(Student student) throws StudentDAOException {
+        List<Student> students = getAllStudents();
+        for (Student currentStudent : students) {
+            if(currentStudent.getId() == student.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

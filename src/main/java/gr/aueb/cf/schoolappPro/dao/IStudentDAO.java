@@ -10,8 +10,11 @@ public interface IStudentDAO {
     Student update(Student student) throws StudentDAOException;
     void delete(int id) throws StudentDAOException;
 
+    List<Student> getByFirstname(String firstname) throws StudentDAOException;
     List<Student> getByLastname(String lastname) throws StudentDAOException;
     Student getById(int id) throws StudentDAOException;
-
+    Boolean studentIdExists(int id) throws StudentDAOException;
     List<Student> getAllStudents();
+
+    Boolean studentExists(Student student) throws StudentDAOException;
 }
