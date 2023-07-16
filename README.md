@@ -1,8 +1,3 @@
-# school-app-pro
-
-## Architecture
-
-
 ## Reason
 To develop a <b>Full Stack Application</b> for a School Managment System. And to show case my skillset.
 
