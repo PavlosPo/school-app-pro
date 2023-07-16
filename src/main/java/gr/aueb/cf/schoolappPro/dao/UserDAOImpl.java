@@ -174,4 +174,26 @@ public class UserDAOImpl implements IUserDAO{
         }
         return users;
     }
+
+    @Override
+    public boolean userIdExists(int id) throws UserDAOException {
+        List<User> users = getAllUsers();
+        for (User user : users) {
+            if(user.getId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean userExists(User user) throws UserDAOException {
+        List<User> users = getAllUsers();
+        for (User currentUser : users) {
+            if(user.getId() == user.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -93,9 +93,9 @@ public class SpecialityDAOImpl implements ISpecialityDAO{
     }
 
     @Override
-    public List<Speciality> getBySpeciality(String speciality) throws SpecialityDAOException {
+    public Speciality getBySpeciality(String speciality) throws SpecialityDAOException {
         String sql = "SELECT * FROM SPECIALITIES WHERE SPECIALITY = ?";
-        List<Speciality> specialities = new ArrayList<>();
+        Speciality specialityInstanceToReturn = null;
         ResultSet rs = null;
 
         try (Connection connection = DBUtil.getConnection();
@@ -104,9 +104,9 @@ public class SpecialityDAOImpl implements ISpecialityDAO{
             ps.setString(1, speciality);
             rs = ps.executeQuery();
 
-            while (rs.next()) {
-                Speciality specialityNew = new Speciality(rs.getInt("ID"), rs.getString("SPECIALITY"));
-                specialities.add(specialityNew);
+            if (rs.next()) {
+                 specialityInstanceToReturn = new Speciality(rs.getInt("ID"), rs.getString("SPECIALITY"));
+                 return specialityInstanceToReturn;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -118,7 +118,7 @@ public class SpecialityDAOImpl implements ISpecialityDAO{
                 e.printStackTrace();
             }
         }
-        return specialities;
+        return specialityInstanceToReturn;
     }
 
     @Override
@@ -171,5 +171,15 @@ public class SpecialityDAOImpl implements ISpecialityDAO{
             throw new SpecialityDAOException("SQL ERROR in Getting all the Specialities");
         }
         return new ArrayList<>(specialities);
+    }
+
+    @Override
+    public boolean specialityIdExists(int id) throws SpecialityDAOException {
+        for(Speciality speciality : getAllSpecialities()) {
+            if (speciality.getId() == id) {
+                return true;
+            }
+        }
+        return false;
     }
 }

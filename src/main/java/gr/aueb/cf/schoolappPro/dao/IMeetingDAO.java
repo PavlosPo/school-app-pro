@@ -16,4 +16,8 @@ public interface IMeetingDAO {
     List<Meeting> getByStudentId(int studentId) throws MeetingDAOException;
 
     List<Meeting> getAllMeetings() throws MeetingDAOException;
+
+    boolean meetingRoomExists(String meetingRoom) throws MeetingDAOException;
+    boolean meetingExists(int teacherId, int studentId) throws MeetingDAOException;
+
 }

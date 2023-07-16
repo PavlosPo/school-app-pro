@@ -252,4 +252,23 @@ public class MeetingDAOImpl implements IMeetingDAO{
         return meetings;
     }
 
+    @Override
+    public boolean meetingRoomExists(String meetingRoom) throws MeetingDAOException {
+        for (Meeting meeting : getAllMeetings()) {
+            if (meeting.getMeetingRoom().trim().equalsIgnoreCase(meetingRoom.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean meetingExists(int teacherId, int studentId) throws MeetingDAOException {
+        for (Meeting meeting : getAllMeetings()) {
+            if ((meeting.getTeacherId() == teacherId) && (meeting.getStudentId() == studentId)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

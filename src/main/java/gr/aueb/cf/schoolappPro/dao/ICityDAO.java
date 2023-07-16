@@ -11,4 +11,9 @@ public interface ICityDAO {
     void delete(int id) throws CityDAOException;
     List<City> getById(int id) throws CityDAOException;
     List<City> getByCity(String cityName) throws CityDAOException;
+
+    List<City> getAllCities() throws CityDAOException;
+
+    boolean cityExistsById(int id) throws CityDAOException;
+    boolean cityExistsByCityName(String city) throws CityDAOException;
 }

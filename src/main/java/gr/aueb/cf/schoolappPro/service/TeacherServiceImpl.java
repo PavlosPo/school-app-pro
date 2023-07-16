@@ -10,7 +10,7 @@ import gr.aueb.cf.schoolappPro.service.exceptions.TeacherNotFoundException;
 import java.util.List;
 
 public class TeacherServiceImpl implements ITeacherService{
-    private ITeacherDAO teacherDAO;
+    private final ITeacherDAO teacherDAO;
 
     public TeacherServiceImpl(ITeacherDAO teacherDAO) {
         this.teacherDAO = teacherDAO;
@@ -90,10 +90,10 @@ public class TeacherServiceImpl implements ITeacherService{
     }
 
     private Teacher map(TeacherInsertDTO dto) {
-        return new Teacher(null, dto.getFirstname(), dto.getLastname());    // null as id
+        return new Teacher(dto.getSsn() , dto.getFirstname(), dto.getLastname(), dto.getSpecialityId(), dto.getUserId());    // null as id
     }
 
     private Teacher map(TeacherUpdateDTO dto) {
-        return new Teacher(dto.getId(), dto.getFirstname(), dto.getLastname());
+        return new Teacher(dto.getSsn() , dto.getFirstname(), dto.getLastname(), dto.getSpecialityId(), dto.getUserId());
     }
 }

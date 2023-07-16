@@ -10,7 +10,7 @@ import gr.aueb.cf.schoolappPro.service.exceptions.StudentNotFoundException;
 import java.util.List;
 
 public class StudentServiceImpl implements IStudentService{
-    private IStudentDAO dao;
+    private final IStudentDAO dao;
 
     public StudentServiceImpl(IStudentDAO dao) {
         this.dao = dao;

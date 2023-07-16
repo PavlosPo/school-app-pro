@@ -13,9 +13,9 @@ public class DBUtil {
     }
 
     static {
-        ds.setUrl("jdbc:mysql://localhost:3306/schooldb?serverTimezone=UTC");
-        ds.setUsername("schooldbuser");
-        ds.setPassword("Poulos147258369");
+        ds.setUrl("jdbc:mysql://localhost:3306/schooldbpro?serverTimezone=UTC");
+        ds.setUsername("schoolpro");
+        ds.setPassword(System.getenv("SCHOOLDBPRO_PASSWORD"));
         ds.setInitialSize(8);
         ds.setMaxTotal(32);
         ds.setMinIdle(8);

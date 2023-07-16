@@ -15,6 +15,5 @@ public interface IStudentDAO {
     Student getById(int id) throws StudentDAOException;
     Boolean studentIdExists(int id) throws StudentDAOException;
     List<Student> getAllStudents();
-
     Boolean studentExists(Student student) throws StudentDAOException;
 }

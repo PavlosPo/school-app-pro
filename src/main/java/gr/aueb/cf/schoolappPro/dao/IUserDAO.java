@@ -11,6 +11,7 @@ public interface IUserDAO {
     void delete(int id) throws UserDAOException;
     List<User> getByUsername(String username) throws UserDAOException;
     User getById(int id) throws UserDAOException;
-
+    boolean userIdExists(int id) throws UserDAOException;
     List<User> getAllUsers();
+    boolean userExists(User user) throws UserDAOException;
 }

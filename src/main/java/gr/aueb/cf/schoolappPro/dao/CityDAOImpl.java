@@ -10,7 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CityDAOImpl implements ICityDAO {
 
@@ -142,5 +144,48 @@ public class CityDAOImpl implements ICityDAO {
             }
         }
         return cities;
+    }
+
+    @Override
+    public List<City> getAllCities() throws CityDAOException{
+        String sql = "SELECT * FROM CITIES";
+        Set<City> cities = new HashSet<>(); // Set so we remove duplicates
+        ResultSet rs = null;
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                City city = new City(rs.getInt("ID"), rs.getString("CITY"));
+                cities.add(city);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new CityDAOException("SQL ERROR in Getting all the Cities");
+        }
+        return new ArrayList<>(cities);
+    }
+
+    @Override
+    public boolean cityExistsById(int id) throws CityDAOException {
+        for(City city : getAllCities()) {
+            if (city.getId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean cityExistsByCityName(String city) throws CityDAOException {
+        for(City currentCity : getAllCities() ) {
+            if(currentCity.getCity().trim().equalsIgnoreCase(city.trim())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

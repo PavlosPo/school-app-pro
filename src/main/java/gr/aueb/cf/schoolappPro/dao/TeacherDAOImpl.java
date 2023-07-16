@@ -20,16 +20,22 @@ public class TeacherDAOImpl implements ITeacherDAO{
 
     @Override
     public Teacher insert(Teacher teacher) throws TeacherDAOException {
-        String sql = "INSERT INTO TEACHERS (FIRSTNAME, LASTNAME) VALUES (? , ?)";
+        String sql = "INSERT INTO TEACHERS (SSN, FIRSTNAME, LASTNAME, SPECIALITY_ID, USER_ID) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
+            Integer ssn = teacher.getSsn();
             String firstname = teacher.getFirstname();
             String lastname = teacher.getLastname();
+            Integer specialityId = teacher.getSpecialityId();
+            Integer userId = teacher.getUserId();
 
-            ps.setString(1, firstname); // sql injection protection
-            ps.setString(2, lastname);
+            ps.setInt(1, ssn);
+            ps.setString(2, firstname); // sql injection protection
+            ps.setString(3, lastname);
+            ps.setInt(4, specialityId);
+            ps.setInt(5, userId);
 
             int n = ps.executeUpdate();
             if (n >= 1) {
@@ -46,18 +52,21 @@ public class TeacherDAOImpl implements ITeacherDAO{
 
     @Override
     public Teacher update(Teacher teacher) throws TeacherDAOException {
-        String sql = "UPDATE TEACHERS SET FIRSTNAME = ? , LASTNAME = ? WHERE ID = ?";
+        String sql = "UPDATE TEACHERS SET FIRSTNAME = ? , LASTNAME = ?, USER_ID = ?  WHERE ID = ?";
 
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             int id = teacher.getId();
+            Integer ssn = teacher.getSsn();
             String firstname = teacher.getFirstname();
             String lastname = teacher.getLastname();
 
+
             ps.setString(1, firstname); // sql injection protection
             ps.setString(2, lastname);
-            ps.setInt(3, id);
+            ps.setInt(3, ssn);
+            ps.setInt(4, id);
 
             int n = ps.executeUpdate();
             if (n >= 1) {
@@ -108,7 +117,8 @@ public class TeacherDAOImpl implements ITeacherDAO{
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                Teacher teacher = new Teacher(rs.getInt("ID"), rs.getString("FIRSTNAME"), rs.getString("LASTNAME"));
+                Teacher teacher = new Teacher(rs.getInt("SSN"), rs.getString("FIRSTNAME"), rs.getString("LASTNAME"),
+                        rs.getInt("SPECIALITY_ID"), rs.getInt("USER_ID"));
                 teachers.add(teacher);
             }
         } catch (SQLException e) {
@@ -137,7 +147,8 @@ public class TeacherDAOImpl implements ITeacherDAO{
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                teacher = new Teacher(rs.getInt("ID"), rs.getString("FIRSTNAME"), rs.getString("LASTNAME"));
+                teacher = new Teacher(rs.getInt("SSN"), rs.getString("FIRSTNAME"), rs.getString("LASTNAME"),
+                        rs.getInt("SPECIALITY_ID"), rs.getInt("USER_ID"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -164,7 +175,8 @@ public class TeacherDAOImpl implements ITeacherDAO{
             rs = ps.executeQuery(sql);
 
             while (rs.next()) {
-                Teacher teacher = new Teacher(rs.getInt("ID"), rs.getString("FIRSTNAME"), rs.getString("LASTNAME"));
+                Teacher teacher = new Teacher(rs.getInt("SSN"), rs.getString("FIRSTNAME"), rs.getString("LASTNAME"),
+                        rs.getInt("SPECIALITY_ID"), rs.getInt("USER_ID"));
                 teachers.add(teacher);
             }
         } catch (SQLException e) {
